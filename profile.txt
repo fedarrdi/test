@@ -1,0 +1,388 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls   s/call   s/call  name    
+ 77.18      9.21     9.21 144297099     0.00     0.00  get_f1bit_index
+  6.16      9.95     0.74 20186512     0.00     0.00  bishop_move
+  5.28     10.58     0.63  6528209     0.00     0.00  generate_all_attacks
+  3.48     11.00     0.42 20223205     0.00     0.00  rook_move
+  1.34     11.16     0.16   215753     0.00     0.00  generate_position_moves
+  1.17     11.30     0.14   215754     0.00     0.00  init_move_list
+  0.84     11.40     0.10 13443629     0.00     0.00  knight_move
+  0.84     11.50     0.10   188990     0.00     0.00  evaluate_game_state
+  0.75     11.59     0.09  6312461     0.00     0.00  play_move
+  0.59     11.66     0.07 28186942     0.00     0.00  black_pawn_attacks
+  0.42     11.71     0.05  6123463     0.00     0.00  is_king_checked
+  0.34     11.75     0.04   188993     0.00     0.00  get_bord_hash
+  0.34     11.79     0.04   188990     0.00     0.00  count_pieces
+  0.25     11.82     0.03 25574855     0.00     0.00  white_pawn_attacks
+  0.25     11.85     0.03   215753     0.00     0.00  sieve_moves
+  0.17     11.87     0.02  6743962     0.00     0.00  king_move
+  0.17     11.89     0.02   827200     0.00     0.00  black_pawn_move
+  0.17     11.91     0.02   188993     0.00     0.00  insert_item
+  0.13     11.92     0.02  6737457     0.00     0.00  queen_move
+  0.08     11.93     0.01   892863     0.00     0.00  white_pawn_move
+  0.08     11.94     0.01   188990     0.00     0.00  position_occurrences
+  0.00     11.94     0.00   377980     0.00     0.00  min
+  0.00     11.94     0.00   188993     0.00     0.00  check_for_mate_or_path
+  0.00     11.94     0.00   188993     0.00     0.00  evaluate_position
+  0.00     11.94     0.00   188990     0.00     0.00  easy_endgame
+  0.00     11.94     0.00   188990     0.00     0.00  remove_item
+  0.00     11.94     0.00    26760     0.00     0.00  move_ordering_by_capture
+  0.00     11.94     0.00      849     0.00     0.00  get_random_64bit_number
+  0.00     11.94     0.00      320     0.00     0.00  print_piece
+  0.00     11.94     0.00        5     0.00     2.39  min_max
+  0.00     11.94     0.00        5     0.00     0.00  print_chess_board
+  0.00     11.94     0.00        5     0.00     0.00  print_move
+  0.00     11.94     0.00        1     0.00     0.00  create_table
+  0.00     11.94     0.00        1     0.00     0.00  fill_lookup_table
+  0.00     11.94     0.00        1     0.00     0.00  find_nearest_prime_above
+  0.00     11.94     0.00        1     0.00     0.00  init_random_keys
+  0.00     11.94     0.00        1     0.00     0.00  parse_FEN
+  0.00     11.94     0.00        1     0.00     0.00  sqrt64
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 0.08% of 11.94 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]    100.0    0.00   11.94                 main [1]
+                0.00   11.94       5/5           min_max [2]
+                0.00    0.00       1/215754      init_move_list [17]
+                0.00    0.00       5/6312461     play_move [19]
+                0.00    0.00       5/5           print_move [33]
+                0.00    0.00       5/5           print_chess_board [32]
+                0.00    0.00       1/1           create_table [34]
+                0.00    0.00       1/1           parse_FEN [38]
+                0.00    0.00       1/1           fill_lookup_table [35]
+                0.00    0.00       1/1           init_random_keys [37]
+-----------------------------------------------
+                               26755             min_max [2]
+                0.00   11.94       5/5           main [1]
+[2]    100.0    0.00   11.94       5+26755   min_max [2]
+                0.00   10.31  188993/188993      evaluate_position [3]
+                0.00    1.02   26760/215753      sieve_moves [7]
+                0.04    0.39  188993/188993      get_bord_hash [14]
+                0.02    0.12   26760/215753      generate_position_moves [9]
+                0.02    0.00  188993/188993      insert_item [24]
+                0.02    0.00   26760/215754      init_move_list [17]
+                0.00    0.00  188993/6312461     play_move [19]
+                0.00    0.00  188990/188990      remove_item [28]
+                0.00    0.00   26760/26760       move_ordering_by_capture [29]
+                               26755             min_max [2]
+-----------------------------------------------
+                0.00   10.31  188993/188993      min_max [2]
+[3]     86.4    0.00   10.31  188993         evaluate_position [3]
+                0.00    8.61  188993/188993      check_for_mate_or_path [6]
+                0.00    0.89  188990/188990      easy_endgame [10]
+                0.04    0.77  188990/188990      count_pieces [12]
+-----------------------------------------------
+                0.02    0.00  377980/144297099     easy_endgame [10]
+                0.39    0.00 6034876/144297099     get_bord_hash [14]
+                0.61    0.00 9566561/144297099     generate_position_moves [9]
+                0.77    0.00 12069566/144297099     evaluate_game_state [11]
+                0.77    0.00 12069566/144297099     count_pieces [12]
+                6.65    0.00 104178550/144297099     generate_all_attacks [5]
+[4]     77.2    9.21    0.00 144297099         get_f1bit_index [4]
+-----------------------------------------------
+                0.02    0.23  188993/6528209     check_for_mate_or_path [6]
+                0.02    0.26  215753/6528209     generate_position_moves [9]
+                0.59    7.50 6123463/6528209     is_king_checked [8]
+[5]     72.2    0.63    7.99 6528209         generate_all_attacks [5]
+                6.65    0.00 104178550/144297099     get_f1bit_index [4]
+                0.47    0.00 13018643/20186512     bishop_move [13]
+                0.01    0.37 6522394/6737457     queen_move [16]
+                0.27    0.00 13054288/20223205     rook_move [15]
+                0.10    0.00 13013282/13443629     knight_move [18]
+                0.07    0.00 27359742/28186942     black_pawn_attacks [20]
+                0.03    0.00 24681992/25574855     white_pawn_attacks [21]
+                0.02    0.00 6528209/6743962     king_move [23]
+-----------------------------------------------
+                0.00    8.61  188993/188993      evaluate_position [3]
+[6]     72.1    0.00    8.61  188993         check_for_mate_or_path [6]
+                0.03    7.21  188993/215753      sieve_moves [7]
+                0.14    0.85  188993/215753      generate_position_moves [9]
+                0.02    0.23  188993/6528209     generate_all_attacks [5]
+                0.12    0.00  188993/215754      init_move_list [17]
+                0.01    0.00  188990/188990      position_occurrences [26]
+-----------------------------------------------
+                0.00    1.02   26760/215753      min_max [2]
+                0.03    7.21  188993/215753      check_for_mate_or_path [6]
+[7]     69.1    0.03    8.23  215753         sieve_moves [7]
+                0.05    8.09 6123463/6123463     is_king_checked [8]
+                0.09    0.00 6123463/6312461     play_move [19]
+-----------------------------------------------
+                0.05    8.09 6123463/6123463     sieve_moves [7]
+[8]     68.2    0.05    8.09 6123463         is_king_checked [8]
+                0.59    7.50 6123463/6528209     generate_all_attacks [5]
+-----------------------------------------------
+                0.02    0.12   26760/215753      min_max [2]
+                0.14    0.85  188993/215753      check_for_mate_or_path [6]
+[9]      9.5    0.16    0.97  215753         generate_position_moves [9]
+                0.61    0.00 9566561/144297099     get_f1bit_index [4]
+                0.02    0.26  215753/6528209     generate_all_attacks [5]
+                0.02    0.00  827200/827200      black_pawn_move [22]
+                0.02    0.00  430412/20186512     bishop_move [13]
+                0.00    0.01  215063/6737457     queen_move [16]
+                0.01    0.00  892863/892863      white_pawn_move [25]
+                0.01    0.00  431460/20223205     rook_move [15]
+                0.00    0.00  430347/13443629     knight_move [18]
+                0.00    0.00  215753/6743962     king_move [23]
+-----------------------------------------------
+                0.00    0.89  188990/188990      evaluate_position [3]
+[10]     7.5    0.00    0.89  188990         easy_endgame [10]
+                0.10    0.77  188990/188990      evaluate_game_state [11]
+                0.02    0.00  377980/144297099     get_f1bit_index [4]
+                0.00    0.00  377980/377980      min [27]
+-----------------------------------------------
+                0.10    0.77  188990/188990      easy_endgame [10]
+[11]     7.3    0.10    0.77  188990         evaluate_game_state [11]
+                0.77    0.00 12069566/144297099     get_f1bit_index [4]
+-----------------------------------------------
+                0.04    0.77  188990/188990      evaluate_position [3]
+[12]     6.8    0.04    0.77  188990         count_pieces [12]
+                0.77    0.00 12069566/144297099     get_f1bit_index [4]
+-----------------------------------------------
+                0.02    0.00  430412/20186512     generate_position_moves [9]
+                0.25    0.00 6737457/20186512     queen_move [16]
+                0.47    0.00 13018643/20186512     generate_all_attacks [5]
+[13]     6.2    0.74    0.00 20186512         bishop_move [13]
+-----------------------------------------------
+                0.04    0.39  188993/188993      min_max [2]
+[14]     3.6    0.04    0.39  188993         get_bord_hash [14]
+                0.39    0.00 6034876/144297099     get_f1bit_index [4]
+-----------------------------------------------
+                0.01    0.00  431460/20223205     generate_position_moves [9]
+                0.14    0.00 6737457/20223205     queen_move [16]
+                0.27    0.00 13054288/20223205     generate_all_attacks [5]
+[15]     3.5    0.42    0.00 20223205         rook_move [15]
+-----------------------------------------------
+                0.00    0.01  215063/6737457     generate_position_moves [9]
+                0.01    0.37 6522394/6737457     generate_all_attacks [5]
+[16]     3.3    0.02    0.38 6737457         queen_move [16]
+                0.25    0.00 6737457/20186512     bishop_move [13]
+                0.14    0.00 6737457/20223205     rook_move [15]
+-----------------------------------------------
+                0.00    0.00       1/215754      main [1]
+                0.02    0.00   26760/215754      min_max [2]
+                0.12    0.00  188993/215754      check_for_mate_or_path [6]
+[17]     1.2    0.14    0.00  215754         init_move_list [17]
+-----------------------------------------------
+                0.00    0.00  430347/13443629     generate_position_moves [9]
+                0.10    0.00 13013282/13443629     generate_all_attacks [5]
+[18]     0.8    0.10    0.00 13443629         knight_move [18]
+-----------------------------------------------
+                0.00    0.00       5/6312461     main [1]
+                0.00    0.00  188993/6312461     min_max [2]
+                0.09    0.00 6123463/6312461     sieve_moves [7]
+[19]     0.8    0.09    0.00 6312461         play_move [19]
+-----------------------------------------------
+                0.00    0.00  827200/28186942     black_pawn_move [22]
+                0.07    0.00 27359742/28186942     generate_all_attacks [5]
+[20]     0.6    0.07    0.00 28186942         black_pawn_attacks [20]
+-----------------------------------------------
+                0.00    0.00  892863/25574855     white_pawn_move [25]
+                0.03    0.00 24681992/25574855     generate_all_attacks [5]
+[21]     0.3    0.03    0.00 25574855         white_pawn_attacks [21]
+-----------------------------------------------
+                0.02    0.00  827200/827200      generate_position_moves [9]
+[22]     0.2    0.02    0.00  827200         black_pawn_move [22]
+                0.00    0.00  827200/28186942     black_pawn_attacks [20]
+-----------------------------------------------
+                0.00    0.00  215753/6743962     generate_position_moves [9]
+                0.02    0.00 6528209/6743962     generate_all_attacks [5]
+[23]     0.2    0.02    0.00 6743962         king_move [23]
+-----------------------------------------------
+                0.02    0.00  188993/188993      min_max [2]
+[24]     0.2    0.02    0.00  188993         insert_item [24]
+-----------------------------------------------
+                0.01    0.00  892863/892863      generate_position_moves [9]
+[25]     0.1    0.01    0.00  892863         white_pawn_move [25]
+                0.00    0.00  892863/25574855     white_pawn_attacks [21]
+-----------------------------------------------
+                0.01    0.00  188990/188990      check_for_mate_or_path [6]
+[26]     0.1    0.01    0.00  188990         position_occurrences [26]
+-----------------------------------------------
+                0.00    0.00  377980/377980      easy_endgame [10]
+[27]     0.0    0.00    0.00  377980         min [27]
+-----------------------------------------------
+                0.00    0.00  188990/188990      min_max [2]
+[28]     0.0    0.00    0.00  188990         remove_item [28]
+-----------------------------------------------
+                0.00    0.00   26760/26760       min_max [2]
+[29]     0.0    0.00    0.00   26760         move_ordering_by_capture [29]
+-----------------------------------------------
+                0.00    0.00     849/849         init_random_keys [37]
+[30]     0.0    0.00    0.00     849         get_random_64bit_number [30]
+-----------------------------------------------
+                0.00    0.00     320/320         print_chess_board [32]
+[31]     0.0    0.00    0.00     320         print_piece [31]
+-----------------------------------------------
+                0.00    0.00       5/5           main [1]
+[32]     0.0    0.00    0.00       5         print_chess_board [32]
+                0.00    0.00     320/320         print_piece [31]
+-----------------------------------------------
+                0.00    0.00       5/5           main [1]
+[33]     0.0    0.00    0.00       5         print_move [33]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[34]     0.0    0.00    0.00       1         create_table [34]
+                0.00    0.00       1/1           find_nearest_prime_above [36]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[35]     0.0    0.00    0.00       1         fill_lookup_table [35]
+-----------------------------------------------
+                0.00    0.00       1/1           create_table [34]
+[36]     0.0    0.00    0.00       1         find_nearest_prime_above [36]
+                0.00    0.00       1/1           sqrt64 [39]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[37]     0.0    0.00    0.00       1         init_random_keys [37]
+                0.00    0.00     849/849         get_random_64bit_number [30]
+-----------------------------------------------
+                0.00    0.00       1/1           main [1]
+[38]     0.0    0.00    0.00       1         parse_FEN [38]
+-----------------------------------------------
+                0.00    0.00       1/1           find_nearest_prime_above [36]
+[39]     0.0    0.00    0.00       1         sqrt64 [39]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+  [13] bishop_move            [14] get_bord_hash          [19] play_move
+  [20] black_pawn_attacks      [4] get_f1bit_index        [26] position_occurrences
+  [22] black_pawn_move        [30] get_random_64bit_number [32] print_chess_board
+   [6] check_for_mate_or_path [17] init_move_list         [33] print_move
+  [12] count_pieces           [37] init_random_keys       [31] print_piece
+  [34] create_table           [24] insert_item            [16] queen_move
+  [10] easy_endgame            [8] is_king_checked        [28] remove_item
+  [11] evaluate_game_state    [23] king_move              [15] rook_move
+   [3] evaluate_position      [18] knight_move             [7] sieve_moves
+  [35] fill_lookup_table      [27] min                    [39] sqrt64
+  [36] find_nearest_prime_above [2] min_max               [21] white_pawn_attacks
+   [5] generate_all_attacks   [29] move_ordering_by_capture [25] white_pawn_move
+   [9] generate_position_moves [38] parse_FEN
