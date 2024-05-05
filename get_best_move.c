@@ -29,22 +29,6 @@ enum bool min_max(ChessBoard *board, const LookupTable *tbls, const Keys *keys, 
     ///if the position is mate and there are no moves
     *out_eval = best_eval;
 
-    //if (depth == 2) {
-    //    enum bool flag = false;
-    //    for (unsigned int move_index = 0; move_index < list.count; move_index ++){
-    //        enum piece ispr = DECODE_MOVE_PROMOTED_PIECE(list.moves[move_index]);
-    //        enum piece iscap = DECODE_MOVE_CAPTURE(list.moves[move_index]);
-    //        if (ispr != empty && iscap == empty) {
-    //            flag = true;
-    //            print_move(list.moves[move_index]);
-    //        }
-    //    }
-    //    if (flag) {
-    //        printf("&***********************************\n");
-    //    }
-    //}
-
-
     for(unsigned int move_index = 0; move_index < list.count; move_index ++)
     {
         long long curr_eval = 0;

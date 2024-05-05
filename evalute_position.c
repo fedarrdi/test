@@ -4,6 +4,7 @@
 #include "piece_movement.h"
 #include "position_hash_table.h"
 #include "init_functions.h"
+#include "player_interface.h"
 
 int opening_table[12][64] =
         {
@@ -155,20 +156,39 @@ float evaluate_game_state(const ChessBoard *board)
     return (res / all_piece_value) + 0.5;
 }
 
-int min(int a, int b) { return a < b ? a : b; }
+int max(int a, int b) { return a > b ? a : b; }
+int abs(int a) { return a < 0 ? -a : a; }
 
 long long easy_endgame(const ChessBoard *board)
 {
-    enum piece king = (board->turn == white) ? w_king : b_king, enemy_king =  (board->turn == white) ? b_king : w_king;
-    Bitboard king_position = board->pieces[king], enemy_king_position = board->pieces[enemy_king];
-    int king_square = get_f1bit_index(king_position), enemy_king_square = get_f1bit_index(enemy_king_position);
-    int king_y = king_square / 8, king_x = king_square - 8*king_y;
-    int enemy_king_y = enemy_king_square / 8, enemy_king_x = enemy_king_square - 8*enemy_king_y;
-    int dst_btw_kings = abs(enemy_king_x - king_x) + abs(enemy_king_y - king_y);
-    int dst_enemy_king_corner_x = min(enemy_king_x, 7 - enemy_king_x);
-    int dst_enemy_king_corner_y = min(enemy_king_y, 7 - enemy_king_y);
-    int out = ((8 - dst_enemy_king_corner_x) + (8 - dst_enemy_king_corner_y) + 6*dst_btw_kings);
-    return (float)out / evaluate_game_state(board);
+    long long evaluation = 0;
+
+    enum piece king = (board->turn == white) ? w_king : b_king; 
+    enum piece enemy_king =  (board->turn == white) ? b_king : w_king;
+    
+    Bitboard king_position = board->pieces[king], 
+             enemy_king_position = board->pieces[enemy_king];
+    
+    int king_square = get_f1bit_index(king_position); 
+    int enemy_king_square = get_f1bit_index(enemy_king_position);
+
+    int king_y = king_square / 8; 
+    int king_x = king_square - 8*king_y;
+    
+    int enemy_king_y = enemy_king_square / 8;
+    int enemy_king_x = enemy_king_square - 8*enemy_king_y;
+    
+    
+    int enemy_king_dst_to_centre_x = max(3 - enemy_king_x, enemy_king_x - 4);
+    int enemy_king_dst_to_centre_y = max(3 - enemy_king_y, enemy_king_y - 4);
+    int enemy_king_dst_from_centre = enemy_king_dst_to_centre_x + enemy_king_dst_to_centre_y;
+    
+    evaluation += enemy_king_dst_from_centre;
+
+    int dst_between_king_x = abs(king_x - enemy_king_x);
+    int dst_between_king_y = abs(king_y - enemy_king_y);
+    int dst_between_kings = dst_between_king_x + dst_between_king_y;
+    evaluation += 14 - dst_between_kings;
 }
 
 long long count_pieces(const ChessBoard *board)
@@ -189,21 +209,17 @@ long long move_positioning(const ChessBoard *board, int move)
 
 int check_for_mate_or_path(ChessBoard *board, const LookupTable *tbls, HashTable *t, Board_hash hash_key) // 0 for nothing 1 for mate 2 for path 
 {
-
-    board->turn = !board->turn;
     Bitboard attacks = generate_all_attacks(board, tbls);
-
 
     board->turn = !board->turn;
     MoveList list = init_move_list();
     generate_position_moves(board, tbls, &list);
     sieve_moves(&list, board, tbls);
-   
+    board->turn = !board->turn;
 
-    enum piece king = (board->turn == white) ? (w_king) : (b_king);
+    enum piece king = (board->turn == white) ? (b_king) : (w_king);
     Bitboard king_position = board->pieces[king];
 
-    
     if(!list.count && (king_position & attacks))
         return 1;
 

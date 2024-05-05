@@ -72,10 +72,15 @@ void generate_position_moves(ChessBoard *board, const LookupTable *tbls, MoveLis
             enemy_end_index = board->turn == white ? b_king : w_king;
 
     enum color side = board->turn;
+    enum piece king = board->turn == white ? w_king : b_king;
+    int pos = get_f1bit_index(board->pieces[king]);
+    POP_BIT(board->occupied[board->turn], pos);
 
     board->turn = !board->turn;
     Bitboard enemy_attacks = generate_all_attacks(board,  tbls);
     board->turn = !board->turn;
+
+    SET_BIT(board->occupied[board->turn], pos);
 
     for (int piece_index = start_index; piece_index <= end_index; piece_index++)
     {
@@ -231,6 +236,10 @@ void generate_position_moves(ChessBoard *board, const LookupTable *tbls, MoveLis
         if(piece_index == w_king || piece_index == b_king)
         {
             Bitboard king_incomplete_moves = king_move(copy_position, board->occupied[side], board->occupied[!side], tbls);
+
+            print_bitboard(king_incomplete_moves);
+            print_bitboard(enemy_attacks);
+
             Bitboard king_moves = king_incomplete_moves & ~enemy_attacks;
             int curr_move = 0;
             int bit_index_from = get_f1bit_index(copy_position);

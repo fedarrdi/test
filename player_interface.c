@@ -191,6 +191,8 @@ void player_make_move(ChessBoard *board, const LookupTable *tbls, const Keys *ke
         double_push_pawn_flag = 1;
     }
 
+
+
 }
 
 
@@ -334,6 +336,7 @@ void player_make_move(ChessBoard *board, const LookupTable *tbls, const Keys *ke
 void print_move_list(const MoveList *list)
 {
     printf("\n\n\n**************** Position moves ****************\n\n\n");
+    printf("list size: %d\n", list->count);
     for(int i = 0;i < list->count;i++)
         if(list->moves[i])
             print_move(list->moves[i]);

@@ -120,15 +120,6 @@ void bot_vs_bot()
     print_chess_board(&board);
     for(int i = 0; 1 ; i++)
     {
-        /*if(i == 1)
-        {
-            generate_position_moves(&board, &tbls, &list);
-            sieve_moves(&list, &board, &tbls);
-            move_ordering_by_capture(&list);
-            print_move_list(&list);
-        }*/
-
-
         long long eval;
         int move;
         board.turn == white ? printf("WHITE\n") : printf("BLACK\n");
@@ -143,11 +134,6 @@ void bot_vs_bot()
 
         printf("eval: %lli\n", eval);
 
-        /*int double_pawn_push_flag = DECODE_MOVE_DOUBLE_PAWN_PUSH(move);
-        if (double_pawn_push_flag) {
-            printf("NIGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGg\n");
-        }*/
-
         play_move(move, &board);
         print_chess_board(&board);
         print_move(move);
@@ -156,7 +142,7 @@ void bot_vs_bot()
     }
 }
 
-
+int check_for_mate_or_path(ChessBoard *board, const LookupTable *tbls, HashTable *t, Board_hash hash_key); 
 
 int main()
 {
@@ -222,22 +208,16 @@ int main()
     "-----------------------------------\n");
 
     create_table(&t, 10000);
-	board = parse_FEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+//	board = parse_FEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
+	board = parse_FEN("8/8/8/8/8/2k5/8/2K1q3 b");
     tbls  = fill_lookup_table();
     keys  = init_random_keys();
     list  = init_move_list();
 
-     ///generate position moves
-    //generate_position_moves(&board, &tbls, &list);
-    //sieve_moves(&list, &board, &tbls);
+    print_chess_board(&board);
+    
 
-    ///Move ordering speeds up the code by making capturing moves be seen first, therefor sooner alpha beta cuts accurr.
-    //move_ordering_by_capture(&list);
-
-    //print_move_list(&list);
-
-
-    //return 0;
+    return 0;
 
     int choice;
     printf("Welcome to Console Chess!\n");
