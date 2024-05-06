@@ -236,10 +236,6 @@ void generate_position_moves(ChessBoard *board, const LookupTable *tbls, MoveLis
         if(piece_index == w_king || piece_index == b_king)
         {
             Bitboard king_incomplete_moves = king_move(copy_position, board->occupied[side], board->occupied[!side], tbls);
-
-            print_bitboard(king_incomplete_moves);
-            print_bitboard(enemy_attacks);
-
             Bitboard king_moves = king_incomplete_moves & ~enemy_attacks;
             int curr_move = 0;
             int bit_index_from = get_f1bit_index(copy_position);
@@ -262,7 +258,7 @@ void generate_position_moves(ChessBoard *board, const LookupTable *tbls, MoveLis
                             break;
                         }
                 }
-                //printf("King move: from %d -----> to %d\n", bit_index_from, bit_index_to);
+                //printf("King move: from %d -----> to %d\n", bit_index_from, bit_index_to)3;
                 enum piece king = side == white ? w_king : b_king;
                 curr_move = ENCODE_MOVE(bit_index_from, bit_index_to, king, empty, capture_piece, 0, 0, 0);
                 LIST_PUSH(list, curr_move);

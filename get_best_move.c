@@ -48,11 +48,27 @@ enum bool min_max(ChessBoard *board, const LookupTable *tbls, const Keys *keys, 
         ///calculate new position evaluation
         if(depth == 0)
             curr_eval = evaluate_position(board, tbls, t, new_key, curr_move, depth, original_depth);
+
         int a = check_for_mate_or_path(board, tbls, t, new_key);
+
+        ///if mate is found end search
         if(a == 1)
-            printf("Math!!!\n");
+        {
+            //printf("Math!!!\n");
+            best_move = curr_move;
+            int depth_factor = 1000 / ((board->turn == white) ? -(original_depth - depth) - 1 : (original_depth - depth) + 1);
+            best_eval = (board->turn == white ? CHECK_MATE_V : -CHECK_MATE_V) + depth_factor;
+            goto label;
+        }
+
+        ///if path is found don't search deeper
         if(a == 2)
-            printf("Path!!!\n");
+        {
+            //printf("Path!!!\n");
+            curr_eval = 0;
+            goto label;
+        }
+
         ///change the turn
         board->turn = !board->turn;
 
@@ -62,7 +78,8 @@ enum bool min_max(ChessBoard *board, const LookupTable *tbls, const Keys *keys, 
 
         ///set to original
         board->turn = !board->turn;
-        
+
+        label:;
         ///if the current position is better then the current best update
         if((board->turn == white && best_eval < curr_eval) || (board->turn == black && best_eval > curr_eval))
         {

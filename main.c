@@ -209,15 +209,10 @@ int main()
 
     create_table(&t, 10000);
 //	board = parse_FEN("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1");
-	board = parse_FEN("8/8/8/8/8/2k5/8/2K1q3 b");
+	board = parse_FEN("1q6/8/8/8/8/2k5/8/2K5 b");
     tbls  = fill_lookup_table();
     keys  = init_random_keys();
     list  = init_move_list();
-
-    print_chess_board(&board);
-    
-
-    return 0;
 
     int choice;
     printf("Welcome to Console Chess!\n");
