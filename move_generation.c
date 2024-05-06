@@ -335,6 +335,7 @@ void sieve_moves(MoveList *list, ChessBoard *board, const LookupTable *tbls)
 
         memcpy(board->pieces, pieces, sizeof(pieces[1])*12);
         memcpy(board->occupied, occupied, sizeof (occupied[1]) * 3);
+        list->count = new_list_count;
     }
 }
 

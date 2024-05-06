@@ -54,10 +54,19 @@ enum bool min_max(ChessBoard *board, const LookupTable *tbls, const Keys *keys, 
         ///if mate is found end search
         if(a == 1)
         {
-            //printf("Math!!!\n");
             best_move = curr_move;
             int depth_factor = 1000 / ((board->turn == white) ? -(original_depth - depth) - 1 : (original_depth - depth) + 1);
             best_eval = (board->turn == white ? CHECK_MATE_V : -CHECK_MATE_V) + depth_factor;
+            if(original_depth == depth)
+            {
+                printf("Math!!!\n");
+                printf("curr depth: %d\n", depth);
+                print_move(curr_move);
+                printf("eval: %llu\n", best_eval);
+                printf("depth_factor: %d\n===========================================================\n\n\n",
+                       depth_factor);
+            }
+
             goto label;
         }
 
