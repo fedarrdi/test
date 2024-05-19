@@ -4,6 +4,8 @@
 #include "position_hash_table.h"
 #include "zobrist_hashing.h"
 #include "piece_movement.h"
+#include "init_functions.h"
+#include "make_move.h"
 
 int mod(int a) { return a < 0 ? -a : a; }
 
@@ -95,21 +97,32 @@ void print_move(int move)
 void player_make_move(ChessBoard *board, const LookupTable *tbls, const Keys *keys, HashTable *t)
 {
     enum color side = board->turn;
-
+    int enpassant = 0;
     int rank;
     char file;
 
     back:;
 
-    printf("Please enter file and rank.\n");
-    scanf(" %c %d", &file ,&rank);
+    printf("Please enter file.\n");
+    scanf(" %c", &file);
 
     while(file < 'A' || file > 'H')
     {
         printf("File incorrect!\n");
         printf("Please enter file.\n");
-        scanf("%c", &file);
+        scanf(" %c", &file);
     }
+
+    printf("Please enter rank.\n");
+    scanf(" %d", &rank);
+
+    while(rank < 1 || rank > 8)
+    {
+        printf("Rank incorrect!\n");
+        printf("Please enter rank.\n");
+        scanf(" %d", &rank);
+    }
+
     int from_square = (8 - rank) * 8 + file - 'A';
     
     if(!(board->occupied[side] & (1ULL << from_square)))
@@ -118,15 +131,27 @@ void player_make_move(ChessBoard *board, const LookupTable *tbls, const Keys *ke
         goto back;
     }
 
+    printf("Please enter file.\n");
+    scanf(" %c", &file);
+
+    while(file < 'A' || file > 'H')
+    {
+        printf("File incorrect!\n");
+        printf("Please enter file.\n");
+        scanf(" %c", &file);
+    }
+
+    printf("Please enter rank.\n");
+    scanf(" %d", &rank);
+
     while(rank < 0 || rank > 8)
     {
         printf("Rank incorrect!\n");
         printf("Please enter Rank.\n");
         scanf("%d", &rank);
     }
-    
-    int to_square = (8 - rank) * 8 + file - 'A';
 
+    int to_square = (8 - rank) * 8 + file - 'A';
 
     int curr_piece = empty;
     for(enum piece i = w_pawn;i <= b_king; i++)
@@ -145,12 +170,13 @@ void player_make_move(ChessBoard *board, const LookupTable *tbls, const Keys *ke
     }
 
     Bitboard moves = get_piece_move(curr_piece, 1ULL << from_square, board->occupied[side], board->occupied[!board->turn], tbls);
-    
-    if(!(moves & 1ULL << to_square))
+
+    if(!(moves & (1ULL << to_square)))
     {
         printf("This move is invlaid!!!\n");
         goto back;
     }
+
 
     int capture = empty;
     for(enum piece i = w_pawn; i <= b_king; i++)
@@ -176,13 +202,18 @@ void player_make_move(ChessBoard *board, const LookupTable *tbls, const Keys *ke
 
     if(curr_piece == b_pawn && ((1ULL << to_square) & tbls->MaskRank[RANK_1]))
     {
-        printf("To what piece you whant to promote\n");
+        printf("To what piece you want to promote\n");
         for(int i = b_knight; i <= b_queen; i++)
         {
             printf(" %d: ", i);
             print_piece(i);
         }
         scanf(" %d", &promotion);
+    }
+    int en_passant_flag = 1;
+    if((1ULL << to_square) & board->en_passant[side])
+    {
+        en_passant_flag = 1;
     }
 
     int double_push_pawn_flag = 0;
@@ -191,147 +222,37 @@ void player_make_move(ChessBoard *board, const LookupTable *tbls, const Keys *ke
         double_push_pawn_flag = 1;
     }
 
-
-
-}
-
-
-/*
-void player_make_move(ChessBoard *board, const LookupTable *tbls, const Keys *keys, HashTable *t)
-{
-    enum color side = board->turn;
-
-    int rank;
-    char file;
-
-    back:;
-
-    printf("Please enter file and rank.\n");
-    scanf(" %c %d", &file ,&rank);
-
-    while(file < 'A' || file > 'H')
+    int castle_flag = 0;
+    if((curr_piece == w_king || curr_piece == b_king) && mod(to_square - from_square) == 2)
     {
-        printf("File incorrect!\n");
-        printf("Please enter file.\n");
-        scanf("%c", &file);
+        castle_flag = 1;
     }
 
-    while(rank < 0 || rank > 8)
+    int move = ENCODE_MOVE(from_square, to_square, curr_piece, promotion,capture, double_push_pawn_flag, enpassant, castle_flag);
+
+    MoveList list = init_move_list();
+
+    generate_position_moves(board, tbls, &list);
+    sieve_moves(&list, board, tbls);
+
+    int a = 0;
+    for(int i = 0;i < list.count;i++)
     {
-        printf("Rank incorrect!\n");
-        printf("Please enter Rank.\n");
-        scanf("%d", &rank);
-    }
-
-    int from_square = (8 - rank) * 8 + file - 'A';
-
-    int piece = 0;
-
-    for(int i = w_pawn;i <= b_king; i++)
-        if(board->pieces[i] & 1ULL << from_square)
+        if(move == list.moves[i])
         {
-            piece = i;
+            a = 1;
             break;
         }
-
-    if(!get_piece_move(piece, 1ULL << from_square, board->occupied[side], board->occupied[!side], tbls))
-    {
-        printf("This piece has no moves.\n");
-        goto back;
     }
 
-    if(!GET_BIT(board->occupied[side], from_square))
+    if(!a)
     {
-        printf("This square doesn't have a piece of your color!\n");
-        goto back;
+        printf("Invalid move!!!\n");
     }
 
-    back1:;
-    int rank1;
-    char file1;
-    printf("Please enter file and rank.\n");
-    scanf(" %c %d", &file1 ,&rank1);
+    play_move(move, board, keys, t);
 
-    while(file1 < 'A' || file1 > 'H')
-    {
-        printf("File incorrect!\n");
-        printf("Please enter file.\n");
-        scanf("%c", &file1);
-    }
-
-    while(rank1 < 0 || rank1 > 8)
-    {
-        printf("Rank incorrect!\n");
-        printf("Please enter Rank.\n");
-        scanf("%d", &rank1);
-    }
-
-    /// need to fix castle for player move and enpassant
-    int to_square = (8 - rank1) * 8 + file1 - 'A';
-    
-    Bitboard king_board = (board->turn == white) ? board->pieces[w_king] : board->pieces[b_king];
-       
-
-    if(GET_BIT(from_square, king_board))
-    {
-    }
-
-    if(board->turn == white)
-    {
-        if(GET_BIT(from_square, king_board))
-        {
-
-        }
-        
-    }
-
-    if(board->turn == black)
-    {
-
-
-    }
-
-    if(!(get_piece_move(piece, 1ULL << from_square, board->occupied[side], board->occupied[!side], tbls) & 1ULL << to_square))
-    {
-        printf("This move is invalid.\n");
-        goto back1;
-    }
-
-    if(GET_BIT(board->occupied[side], to_square))
-    {
-        printf("This square has a piece of yours , you can't move there!\n");
-        goto back1;
-    }
-
-    POP_BIT(board->occupied[both], from_square);
-    POP_BIT(board->occupied[side], from_square);
-    POP_BIT(board->pieces[piece], from_square);
-
-
-    if(GET_BIT(board->occupied[!side], to_square))  /// move is capture
-    {
-        POP_BIT(board->occupied[!side], to_square);
-
-        for(int i = w_pawn; i <= b_king; i++)
-            POP_BIT(board->pieces[i], to_square);
-    }
-
-    SET_BIT(board->occupied[both], to_square);
-    SET_BIT(board->occupied[side], to_square);
-    SET_BIT(board->pieces[piece], to_square);
-
-    Bitboard enemy_attacks = generate_all_attacks(board, tbls);
-
-    int king_index = side == white ? w_king : b_king;
-    if(enemy_attacks & board->pieces[king_index])
-    {
-        printf("This move exposes king to check.\n");
-        goto back;
-    }
-
-    Board_hash hash = get_bord_hash(board, keys);
-    insert_item(t, hash);
-}*/
+}
 
 void print_move_list(const MoveList *list)
 {

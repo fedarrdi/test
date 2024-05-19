@@ -23,9 +23,26 @@ void player_vs_player()
 {
     while(1)
     {
+        print_chess_board(&board);
         board.turn == white ? printf("WHITE\n") : printf("BLACK\n");
         player_make_move(&board, &tbls, &keys, &t);
-        board.turn = !board.turn; 
+        Board_hash new_hash = get_bord_hash(&board, &keys);
+        int state = check_for_mate_or_path(&board, &tbls, &t, new_hash);
+
+        if(state == 1)
+        {
+            printf("End game mate!!!\n");
+            break;
+        }
+
+        if(state == 2)
+        {
+            printf("End game path!!!\n");
+            break;
+        }
+
+        board.turn = !board.turn;
+
     }
 
 }
@@ -59,7 +76,7 @@ void player_vs_bot()
 
     while(1)
     {
-        long long eval;
+        long long eval = 0;
         int move;
         board.turn == white ? printf("WHITE\n") : printf("BLACK\n");
         printf("depth: %d\n", depth);
@@ -78,7 +95,7 @@ void player_vs_bot()
             }
 
             print_move(move);
-            play_move(move, &board);
+            play_move(move, &board, &keys, &t);
         }
         
         printf("===============================================================================\n");
@@ -134,7 +151,7 @@ void bot_vs_bot()
 
         printf("eval: %lli\n", eval);
 
-        play_move(move, &board);
+        play_move(move, &board, &keys, &t);
         print_chess_board(&board);
         print_move(move);
         printf("===============================================================================\n");
@@ -214,7 +231,8 @@ int main()
     keys  = init_random_keys();
     list  = init_move_list();
 
-
+//    print_chess_board(&board);
+//    return 0;
     int choice;
     printf("Welcome to Console Chess!\n");
     printf("1. Player vs. Player\n");

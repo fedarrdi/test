@@ -325,7 +325,7 @@ void sieve_moves(MoveList *list, ChessBoard *board, const LookupTable *tbls)
 
         memcpy(pieces, board->pieces, sizeof(pieces[1])*12);
         memcpy(occupied, board->occupied, sizeof (occupied[1]) * 3);
-        play_move(list->moves[i], board);
+        play_move_(list->moves[i], board);
 
         if(is_king_checked(board, tbls))
         {

@@ -39,11 +39,10 @@ enum bool min_max(ChessBoard *board, const LookupTable *tbls, const Keys *keys, 
         ChessBoard saveboard;
         memcpy(&saveboard, board, sizeof(*board));
 
-        play_move(curr_move, board);
-          
+        play_move(curr_move, board, keys, t);
+
         /// hash key after the played move
         Board_hash new_key = get_bord_hash(board, keys);
-        insert_item(t, new_key);
 
         ///calculate new position evaluation
         if(depth == 0)
@@ -55,18 +54,8 @@ enum bool min_max(ChessBoard *board, const LookupTable *tbls, const Keys *keys, 
         if(a == 1)
         {
             best_move = curr_move;
-            int depth_factor = 1000 / ((board->turn == white) ? -(original_depth - depth) - 1 : (original_depth - depth) + 1);
-            best_eval = (board->turn == white ? CHECK_MATE_V : -CHECK_MATE_V) + depth_factor;
-            if(original_depth == depth)
-            {
-                printf("Math!!!\n");
-                printf("curr depth: %d\n", depth);
-                print_move(curr_move);
-                printf("eval: %llu\n", best_eval);
-                printf("depth_factor: %d\n===========================================================\n\n\n",
-                       depth_factor);
-            }
-
+            int depth_factor = depth * ((board->turn == black) ? -1 : 1);
+            curr_eval = (board->turn == white ? CHECK_MATE_V : -CHECK_MATE_V) + depth_factor;
             goto label;
         }
 
@@ -98,7 +87,6 @@ enum bool min_max(ChessBoard *board, const LookupTable *tbls, const Keys *keys, 
         }
 
         /// undo the move
-
         memcpy(board, &saveboard, sizeof(*board));
 
         /// removing the position if it is seen for the first time, or decresing the seen counter
