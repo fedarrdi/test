@@ -142,11 +142,11 @@ void bot_vs_bot()
         board.turn == white ? printf("WHITE\n") : printf("BLACK\n");
         int depth = (board.turn == white) ? depth1 : depth2; 
         printf("depth: %d\n", depth);
-        
+        int check = 0;
         if (!min_max(&board, &tbls, &keys, &t, &move, &eval, depth, LLONG_MIN, LLONG_MAX, depth)) 
         {
             printf("Could not find best move, terminating.\n");
-            break;
+            check = 1;
         }
 
         printf("eval: %lli\n", eval);
@@ -156,6 +156,8 @@ void bot_vs_bot()
         print_move(move);
         printf("===============================================================================\n");
         board.turn  = !board.turn;
+        if(check == 1)
+            break;
     }
 }
 
@@ -231,8 +233,7 @@ int main()
     keys  = init_random_keys();
     list  = init_move_list();
 
-//    print_chess_board(&board);
-//    return 0;
+
     int choice;
     printf("Welcome to Console Chess!\n");
     printf("1. Player vs. Player\n");
@@ -256,7 +257,5 @@ int main()
             printf("Invalid choice\n");
             return 1;
     }
-    
-
     return 0;
 }

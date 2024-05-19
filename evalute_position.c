@@ -228,7 +228,7 @@ int check_for_mate_or_path(ChessBoard *board, const LookupTable *tbls, HashTable
 
     if(position_occurrences(t, hash_key) == 3)
     {
-        printf("Three fold repetition\n");
+        //printf("Three fold repetition\n");
         return 2;
     }
 
